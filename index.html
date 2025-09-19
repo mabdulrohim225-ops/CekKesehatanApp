@@ -4,42 +4,95 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cek Gizi</title>
-  <link rel="stylesheet" href="style.css">
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#3498db">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 20px;
+      background: #f4f6f9;
+      color: #333;
+    }
+    h1 { text-align: center; color: #3498db; }
+    .card {
+      max-width: 400px; margin: 20px auto; padding: 20px;
+      background: #fff; border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    label { display: block; margin: 10px 0 5px; }
+    input {
+      width: 100%; padding: 10px; border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      width: 100%; margin-top: 15px; padding: 12px;
+      background: #3498db; color: white;
+      border: none; border-radius: 6px; cursor: pointer;
+    }
+    button:hover { background: #2c80b4; }
+    #result { margin-top: 20px; font-weight: bold; }
+  </style>
 </head>
 <body>
-  <div class="app-container">
-    <h1>📊 Cek Kebutuhan Energi</h1>
-    <form id="formGizi">
-      <label>Berat Badan (kg):</label>
-      <input type="number" id="berat" required>
+  <h1>Cek Gizi</h1>
 
-      <label>Tinggi Badan (cm):</label>
-      <input type="number" id="tinggi" required>
+  <div class="card">
+    <label for="weight">Berat Badan (kg)</label>
+    <input type="number" id="weight" required>
 
-      <label>Usia (tahun):</label>
-      <input type="number" id="usia" required>
+    <label for="height">Tinggi Badan (cm)</label>
+    <input type="number" id="height" required>
 
-      <label>Jenis Kelamin:</label>
-      <select id="gender" required>
-        <option value="Laki-laki">Laki-laki</option>
-        <option value="Perempuan">Perempuan</option>
-      </select>
+    <label for="age">Usia (tahun)</label>
+    <input type="number" id="age" required>
 
-      <label>Aktivitas Harian:</label>
-      <select id="aktivitas" required>
-        <option value="Sangat Ringan">Sangat Ringan</option>
-        <option value="Ringan">Ringan</option>
-        <option value="Sedang">Sedang</option>
-        <option value="Berat">Berat</option>
-        <option value="Sangat Berat">Sangat Berat</option>
-      </select>
+    <button onclick="calculateBMI()">Hitung BMI</button>
 
-      <button type="submit">Hitung Energi</button>
-    </form>
-
-    <div id="hasil"></div>
+    <div id="result"></div>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    function calculateBMI() {
+      const weight = parseFloat(document.getElementById('weight').value);
+      const height = parseFloat(document.getElementById('height').value) / 100;
+      const age = parseInt(document.getElementById('age').value);
+
+      if (!weight || !height || !age) {
+        document.getElementById('result').innerHTML = "⚠️ Lengkapi semua input!";
+        return;
+      }
+
+      const bmi = (weight / (height * height)).toFixed(1);
+      let status = "";
+      let tips = "";
+
+      if (bmi < 18.5) {
+        status = "Underweight";
+        tips = "Perbanyak konsumsi makanan bergizi seimbang dan tinggi protein.";
+      } else if (bmi >= 18.5 && bmi <= 24.9) {
+        status = "Normal";
+        tips = "Pertahankan pola makan sehat dan rutin berolahraga.";
+      } else if (bmi >= 25 && bmi <= 29.9) {
+        status = "Overweight";
+        tips = "Kurangi makanan tinggi lemak dan gula, tingkatkan aktivitas fisik.";
+      } else {
+        status = "Obesitas";
+        tips = "Konsultasikan ke tenaga medis dan terapkan gaya hidup sehat.";
+      }
+
+      document.getElementById('result').innerHTML =
+        `📊 BMI Anda: <b>${bmi}</b> (${status})<br>💡 Tips: ${tips}`;
+    }
+
+    // === Service Worker untuk PWA ===
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js")
+        .then(() => console.log("Service Worker registered"))
+        .catch(err => console.error("SW registration failed:", err));
+    }
+  </script>
 </body>
 </html>
