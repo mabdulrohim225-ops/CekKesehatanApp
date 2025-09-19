@@ -2,10 +2,11 @@ const CACHE_NAME = "cek-gizi-v1";
 const urlsToCache = [
   "/",
   "/index.html",
-  "/style.css",
-  "/script.js",
+  "/manifest.json",
+  "/sw.js",
   "/assets/icon-192.png",
-  "/assets/icon-512.png"
+  "/assets/icon-512.png",
+  "/assets/hero.png"
 ];
 
 self.addEventListener("install", event => {
@@ -16,8 +17,6 @@ self.addEventListener("install", event => {
 
 self.addEventListener("fetch", event => {
   event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request);
-    })
+    caches.match(event.request).then(response => response || fetch(event.request))
   );
 });

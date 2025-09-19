@@ -9,6 +9,9 @@
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#3498db">
 
+  <!-- Favicon -->
+  <link rel="icon" href="assets/icon-192.png" type="image/png">
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -17,6 +20,17 @@
       color: #333;
     }
     h1 { text-align: center; color: #3498db; }
+    .hero {
+      display: flex;
+      justify-content: center;
+      margin: 10px 0 20px;
+    }
+    .hero img {
+      max-width: 250px;
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
     .card {
       max-width: 400px; margin: 20px auto; padding: 20px;
       background: #fff; border-radius: 12px;
@@ -38,6 +52,11 @@
 </head>
 <body>
   <h1>Cek Gizi</h1>
+
+  <!-- Gambar di homepage -->
+  <div class="hero">
+    <img src="assets/hero.png" alt="Ilustrasi Gizi Sehat">
+  </div>
 
   <div class="card">
     <label for="weight">Berat Badan (kg)</label>
